@@ -106,7 +106,7 @@ public class LocationRentalApp {
             System.out.println("Total Revenue: " + NumberFormat.getCurrencyInstance().format(calculateTotalRevenue()));
         }
     	else if (userChoice == 8) {
-    		deleteLocation();
+    		getLocationData(8);
     	}
         else if (userChoice == 9) {
             System.out.println("Thanks for using our program");
@@ -120,7 +120,7 @@ public class LocationRentalApp {
         displayMenu();
     }
  // method to search for location and output all data for that location
-    public static void getLocationData(int userInput) {
+    public static void getLocationData(int userInput) throws IOException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter location name:");
         String locationNamez = sc.nextLine();
@@ -135,6 +135,10 @@ public class LocationRentalApp {
                     System.out.println("Rental Rate for this location: "
                             + NumberFormat.getCurrencyInstance().format(lrentals.get(i).rentalRate));
                     locationFound = true;
+                }
+                if(userInput == 8) {
+                	deleteLocation(lrentals.get(i));
+                	locationFound = true;
                 }
             }
         }
@@ -234,23 +238,13 @@ public class LocationRentalApp {
             rentalPrize.createNewFile();
         }
     }
-    public static void deleteLocation() throws IOException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter location to delete: ");
-        String anotherString = sc.nextLine();
-        System.out.println("Are you sure you would like to delete this location? Y/N");
+    public static void deleteLocation(LocationRental lr) throws IOException {
+    	Scanner sc = new Scanner(System.in);
+    	System.out.println("Are you sure you would like to delete this location? Y/N");
         String choice = sc.nextLine();
-        while (choice.equalsIgnoreCase("Y")) {
-            for (int i = 0; i < lrentals.size(); i++) {
-                if (lrentals.get(i).locationName.equalsIgnoreCase(anotherString)) {
-                    lrentals.remove(i);
-                    System.out.println("The location " + anotherString + " was removed");
-                    
-                } else {
-                    System.out.println("Location was not found");
-                }
-                
-            } break;
+        if (choice.equalsIgnoreCase("Y")) {
+            lrentals.remove(lr);
+            System.out.println("The location " + lr.locationName + " was removed");
         }
     } 
 }
